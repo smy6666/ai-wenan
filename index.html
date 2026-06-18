@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LeadFlow AI — 智能B2B客户挖掘引擎</title>
+<style>
+  :root {
+    --bg: #0a0a0f; --card: #13131a; --border: #1e1e2a;
+    --text: #e4e4e8; --text2: #888; --accent: #6366f1;
+    --green: #10b981; --red: #ef4444; --radius: 12px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+  
+  .hero { text-align:center; padding:50px 20px 30px; background:linear-gradient(180deg, #1a1040, var(--bg)); }
+  .hero h1 { font-size:2.5rem; background:linear-gradient(135deg, #6366f1, #10b981); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .hero .stats { display:flex; justify-content:center; gap:40px; margin-top:24px; flex-wrap:wrap; }
+  .stat { text-align:center; }
+  .stat .num { font-size:2rem; font-weight:700; color:var(--accent); }
+  .stat .label { font-size:0.85rem; color:var(--text2); }
+  
+  .main { max-width:1000px; margin:0 auto; padding:20px; }
+  
+  .card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:24px; margin-bottom:20px; }
+  .card h2 { font-size:1.2rem; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+  
+  .form-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:16px; }
+  @media (max-width:700px) { .form-row { grid-template-columns:1fr; } }
+  
+  .form-group label { display:block; margin-bottom:4px; font-size:0.82rem; color:var(--text2); }
+  .form-group input, .form-group select { width:100%; padding:10px 12px; background:var(--bg); border:1px solid var(--border); border-radius:8px; color:var(--text); font-size:0.95rem; outline:none; }
+  .form-group input:focus, .form-group select:focus { border-color:var(--accent); }
+  
+  .btn { padding:10px 28px; background:linear-gradient(135deg, #6366f1, #8b5cf6); color:#fff; border:none; border-radius:8px; font-size:0.95rem; cursor:pointer; font-weight:600; }
+  .btn:hover { opacity:0.9; }
+  .btn:disabled { opacity:0.5; cursor:not-allowed; }
+  .btn-green { background:linear-gradient(135deg, #10b981, #059669); }
+  
+  .results { margin-top:16px; }
+  .lead-card { background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:16px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:start; }
+  .lead-card .info h3 { font-size:1rem; margin-bottom:4px; }
+  .lead-card .info p { font-size:0.85rem; color:var(--text2); margin:2px 0; }
+  .lead-card .score { padding:4px 12px; border-radius:20px; font-size:0.8rem; font-weight:600; }
+  .score-hot { background:#dc262620; color:#ef4444; }
+  .score-warm { background:#f59e0b20; color:#f59e0b; }
+  .score-cool { background:#6366f120; color:#6366f1; }
+  
+  .pricing { display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px; margin-top:30px; }
+  .plan { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:28px; text-align:center; }
+  .plan:hover { border-color:var(--accent); }
+  .plan.popular { border-color:var(--accent); border-width:2px; }
+  .plan .price { font-size:2.4rem; font-weight:700; margin:12px 0; }
+  .plan .price span { font-size:0.9rem; color:var(--text2); font-weight:400; }
+  .plan ul { list-style:none; margin:16px 0; color:var(--text2); font-size:0.9rem; }
+  .plan ul li { padding:4px 0; }
+  .badge { display:inline-block; background:var(--accent); color:#fff; font-size:0.75rem; padding:3px 10px; border-radius:10px; margin-bottom:8px; }
+  
+  .export-bar { display:flex; gap:12px; align-items:center; margin-top:12px; flex-wrap:wrap; }
+  .count { color:var(--accent); font-weight:600; }
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>LeadFlow AI</h1>
+  <p style="color:var(--text2);margin-top:8px;">AI驱动的B2B客户挖掘 · 精准找客户 · 批量导出</p>
+  <div class="stats">
+    <div class="stat"><div class="num">50M+</div><div class="label">企业数据库</div></div>
+    <div class="stat"><div class="num">10x</div><div class="label">比手动快</div></div>
+    <div class="stat"><div class="num">85%</div><div class="label">邮箱精准率</div></div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="card">
+    <h2>🔍 搜索目标客户</h2>
+    <div class="form-row">
+      <div class="form-group">
+        <label>行业/关键词</label>
+        <input type="text" id="industry" placeholder="例如：SaaS, 电商, 医疗">
+      </div>
+      <div class="form-group">
+        <label>地区</label>
+        <select id="location">
+          <option value="US">美国</option>
+          <option value="CN">中国</option>
+          <option value="UK">英国</option>
+          <option value="DE">德国</option>
+          <option value="JP">日本</option>
+          <option value="SG">新加坡</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>公司规模</label>
+        <select id="size">
+          <option value="small">小型 (1-50人)</option>
+          <option value="medium" selected>中型 (50-500人)</option>
+          <option value="large">大型 (500+人)</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn" id="search" onclick="searchLeads()">🔍 搜索客户</button>
+    <div class="results" id="results">
+      <p style="color:var(--text2);text-align:center;padding:30px;">
+        输入行业和地区，点击搜索即可找到潜在客户
+      </p>
+    </div>
+  </div>
+
+  <div class="pricing">
+    <div class="plan">
+      <h3>🆓 免费试用</h3>
+      <div class="price">0<span>/月</span></div>
+      <ul>
+        <li>每月 10 次搜索</li>
+        <li>基础公司信息</li>
+        <li>CSV 导出</li>
+      </ul>
+      <button class="btn" style="width:100%">开始使用</button>
+    </div>
+    <div class="plan popular">
+      <div class="badge">🔥 最受欢迎</div>
+      <h3>⚡ 专业版</h3>
+      <div class="price">99<span>/月</span></div>
+      <ul>
+        <li>无限搜索</li>
+        <li>邮箱 & 电话挖掘</li>
+        <li>LinkedIn 数据</li>
+        <li>智能评分排序</li>
+        <li>CRM 集成</li>
+      </ul>
+      <button class="btn btn-green" style="width:100%">立即订阅</button>
+    </div>
+    <div class="plan">
+      <h3>👑 企业版</h3>
+      <div class="price">299<span>/月</span></div>
+      <ul>
+        <li>全部专业版功能</li>
+        <li>API 接入</li>
+        <li>定制化搜索</li>
+        <li>专属客服经理</li>
+        <li>批量数据导出</li>
+      </ul>
+      <button class="btn" style="width:100%">联系我们</button>
+    </div>
+  </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
